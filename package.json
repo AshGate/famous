@@ -1,0 +1,25 @@
+{
+  "name": "discord-ticket-bot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "@discordjs/rest": "^2.2.0",
+    "@napi-rs/canvas": "^0.1.51",
+    "bcryptjs": "^2.4.3",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
+    "discord-html-transcripts": "^3.2.0",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "jsonwebtoken": "^9.0.2",
+    "puppeteer": "^22.3.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}

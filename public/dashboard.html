@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>Panel Admin</h1>
+            <p>Configuration du bot</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" data-section="embed">📝 Embeds</li>
+            <li class="nav-item" data-section="tickets">🎫 Tickets</li>
+            <li class="nav-item" data-section="appointments">📅 Rendez-vous</li>
+            <li class="nav-item" data-section="invoices">💼 Factures</li>
+            <li class="nav-item" data-section="recruitment">👥 Recrutement</li>
+            <li class="nav-item admin-only" data-section="whitelist">🔒 Whitelist</li>
+        </ul>
+        <a href="/logout" class="logout-btn">Déconnexion</a>
+    </div>
+
+    <div class="main-content">
+        <section id="embed" class="section active">
+            <h2>📝 Création d'Embeds</h2>
+            <form id="embedForm" class="form">
+                <div class="form-group">
+                    <label for="embedChannel">Salon</label>
+                    <select id="embedChannel" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="embedTitle">Titre</label>
+                    <input type="text" id="embedTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="embedDescription">Description</label>
+                    <textarea id="embedDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="embedImage">Image (URL)</label>
+                    <input type="url" id="embedImage">
+                </div>
+                <div class="form-group">
+                    <label for="embedFooter">Footer</label>
+                    <input type="text" id="embedFooter">
+                </div>
+                <div class="form-group">
+                    <label>Couleur</label>
+                    <div id="colorPicker" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
+                </div>
+                <div id="embedPreview" style="margin: 20px 0; padding: 15px; background: var(--secondary-color); border-radius: 5px;"></div>
+                <button type="submit" class="btn">Envoyer l'embed</button>
+            </form>
+        </section>
+
+        <section id="tickets" class="section">
+            <h2>🎫 Configuration des Tickets</h2>
+            <form id="ticketForm" class="form">
+                <div class="form-group">
+                    <label for="ticketChannel">Salon</label>
+                    <select id="ticketChannel" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="ticketTitle">Titre</label>
+                    <input type="text" id="ticketTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="ticketDescription">Description</label>
+                    <textarea id="ticketDescription" required></textarea>
+                </div>
+                <button type="submit" class="btn">Mettre à jour</button>
+            </form>
+        </section>
+
+        <section id="appointments" class="section">
+            <h2>📅 Gestion des Rendez-vous</h2>
+            <form id="appointmentForm" class="form">
+                <div class="form-group">
+                    <label for="appointmentChannel">Salon</label>
+                    <select id="appointmentChannel" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentDate">Date</label>
+                    <input type="date" id="appointmentDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentTime">Heure</label>
+                    <input type="time" id="appointmentTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentLocation">Lieu</label>
+                    <input type="text" id="appointmentLocation" required>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentDescription">Description</label>
+                    <textarea id="appointmentDescription" required></textarea>
+                </div>
+                <button type="submit" class="btn">Créer le rendez-vous</button>
+            </form>
+            <div id="calendar" style="margin-top: 2rem;"></div>
+        </section>
+
+        <section id="invoices" class="section">
+            <h2>💼 Création de Factures</h2>
+            <form id="invoiceForm" class="form">
+                <div class="form-group">
+                    <label for="companyName">Nom de l'entreprise</label>
+                    <input type="text" id="companyName" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Adresse</label>
+                    <input type="text" id="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Téléphone (optionnel)</label>
+                    <input type="tel" id="phone">
+                </div>
+
+                <h3 style="margin: 20px 0 10px;">Articles</h3>
+                <div class="form-group">
+                    <label for="itemName">Désignation</label>
+                    <input type="text" id="itemName">
+                </div>
+                <div class="form-group">
+                    <label for="itemQuantity">Quantité</label>
+                    <input type="number" id="itemQuantity" min="1" step="1">
+                </div>
+                <div class="form-group">
+                    <label for="itemPrice">Prix unitaire HT</label>
+                    <input type="number" id="itemPrice" min="0" step="0.01">
+                </div>
+                <button type="button" id="addItemBtn" class="btn">Ajouter l'article</button>
+
+                <table style="margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th>Désignation</th>
+                            <th>Quantité</th>
+                            <th>Prix unitaire HT</th>
+                            <th>Total HT</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsTableBody"></tbody>
+                </table>
+
+                <div style="margin: 20px 0; text-align: right;">
+                    <p>Total HT: <span id="totalHT">0.00€</span></p>
+                    <p>Total TTC: <span id="totalTTC">0.00€</span></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="comments">Commentaires (optionnel)</label>
+                    <textarea id="comments"></textarea>
+                </div>
+
+                <button type="submit" class="btn">Générer la facture</button>
+            </form>
+        </section>
+
+        <section id="recruitment" class="section">
+            <h2>👥 Gestion du Recrutement</h2>
+            <form id="recruitmentForm" class="form">
+                <div class="form-group">
+                    <label for="recruitmentChannel">Salon</label>
+                    <select id="recruitmentChannel" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="recruitmentRole">Rôle à notifier</label>
+                    <select id="recruitmentRole" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="recruitmentStatus">Statut</label>
+                    <select id="recruitmentStatus" required>
+                        <option value="open">Ouvert</option>
+                        <option value="closed">Fermé</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Mettre à jour</button>
+            </form>
+        </section>
+
+        <section id="whitelist" class="section">
+            <h2>🔒 Gestion de la Whitelist</h2>
+            <div class="whitelist-list">
+                <table class="whitelist-table">
+                    <thead>
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Ajouté par</th>
+                            <th>Date d'ajout</th>
+                            <th>Expiration</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="whitelistTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Détails du rendez-vous</h2>
+            <div id="appointmentDetails"></div>
+        </div>
+    </div>
+
+    <script src="/js/channels.js"></script>
+    <script src="/js/embed.js"></script>
+    <script src="/js/tickets.js"></script>
+    <script src="/js/appointments.js"></script>
+    <script src="/js/invoice.js"></script>
+    <script src="/js/recruitment.js"></script>
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                item.classList.add('active');
+                document.getElementById(item.dataset.section).classList.add('active');
+            });
+        });
+
+        // Vérifie si l'utilisateur est admin
+        fetch('/api/user-role')
+            .then(response => response.json())
+            .then(data => {
+                if (data.role !== 'admin') {
+                    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+                }
+            });
+    </script>
+</body>
+</html>
